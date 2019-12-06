@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: myadmin-svc
+  name: myadmin
+  namespace: ncpl
+spec:
+  type: NodePort
+  ports:
+    - nodePort: 30002
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    name: myadmin

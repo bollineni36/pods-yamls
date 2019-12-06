@@ -1,0 +1,9 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: myadmin-http-ingress
+  namespace: ncpl
+spec:
+  backend:
+    serviceName: myadmin
+    servicePort: 80

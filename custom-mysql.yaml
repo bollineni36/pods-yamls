@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: custom-mysql
+spec:
+  selector:
+    matchLabels:
+      app: custom-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: custom-mysql
+    spec:
+      containers:
+      - image: ncpl-mysql
+        name: custom-mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        ports:
+        - containerPort: 3306
+          name: custom-mysql
+        volumeMounts:
+        - name: ncpl-persistent-volume
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: ncpl-persistent-volume
+        persistentVolumeClaim:
+          claimName: ncpl-pv-claim

@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: ncpl-mysql
+  namespace: ncpl
+  labels:
+    app: ncpl-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ncpl-mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ncpl-mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: ncpl-mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        ports:
+        - containerPort: 3306
+          name: ncpl-mysql
+        volumeMounts:
+        - name: ncpl-persistent-volume
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: ncpl-persistent-volume
+        persistentVolumeClaim:
+          claimName: ncpl-pv-claim

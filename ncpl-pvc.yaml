@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ncpl-persistant-volume
+  namespace: ncpl
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/ncpl"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ncpl-pv-claim
+  namespace: ncpl
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

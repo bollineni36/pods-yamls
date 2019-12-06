@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-php
+  namespace: ncpl
+  labels:
+    app: apache-php
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: apache-php
+  template:
+    metadata:
+      labels:
+        app: apache-php
+    spec:
+      containers:
+      - name: php-apache
+        image: ncpldocker.azurecr.io/apache-php:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-php-service
+  namespace: ncpl
+  labels:
+    run: apache-php-service
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 30301
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: apache-php
